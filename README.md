@@ -15,4 +15,10 @@ Thonny Dependencies:
 * SSD1306 OLED LCD Library (on board)
 
 Plotting Dependencies:
-* matplotlib
+* Matplotlib
+
+
+
+## Author
+
+Braden Barlean
