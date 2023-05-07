@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 # Open the data files and read the contents
+# Change to 'sample_data.csv' if you want to use the sample data
 with open('data.csv', 'r') as f:
     data = list(csv.reader(f))
 
