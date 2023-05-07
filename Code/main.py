@@ -23,13 +23,8 @@ represent the hand state of the robot's hand.
 
 This program will also be recording positional data of the joystick
 and the servo motors and will export that data in a csv file.
-This can then be used by the second Python file to visualize the data
-using matplotlib and tkinter.
-
-Next Steps:
-* Potentially add another servo to act as the rotational axis (this
-requires a dive into the documentation about the maximum capacity),
-this could be mapped to the y-axis of the joystick.
+This can then be used by a seperate Python program file to visualize
+the data using matplotlib and tkinter.
 '''
 from machine import Pin, ADC, I2C
 from ssd1306 import SSD1306_I2C
@@ -207,9 +202,11 @@ def joystick_servo_mapping(x_val, servo_max, servo_min, pwm1):
     position value as an integer.
     """  
     # Map joystick positional data to servo motor position
-    servo_position = round(((x_val - 0) / (65536 - 0) * (servo_max - servo_min) + servo_min))
+    servo_position = round(((x_val - 0) / (65536 - 0)
+                            * (servo_max - servo_min) + servo_min))
 
-    # If the joystick isn't moving send back a single value to prevent motor shake
+    # If the joystick isn't moving send back a single value to
+    # prevent motor shake
     if servo_position < 3900:
         pwm1.duty_u16(3800)
     # Else sends new servo position to the servo motor
@@ -226,14 +223,15 @@ def plotting(x_val, servo_position, graph_framebuf, oled):
     
     * x_val (int): Positional data of the joystick.
     * servo_position (int): Positional data of the servo motor.
-    * graph_framebuf (framebuf): A frame buffer used to draw the graph on the OLED.
+    * graph_framebuf (framebuf): A frame buffer used to draw the
+      graph on the OLED.
     * oled (OLED): An OLED display to plot the data on.
 
     Returns:
     
     * None
     """
-    
+    # Creates screen segmentation and hand status title
     oled.line(0, 38, 125, 38, 1)
     oled.line(85, 38, 85, 63, 1)
     oled.text("Hand:", 90, 40)
@@ -246,7 +244,8 @@ def plotting(x_val, servo_position, graph_framebuf, oled):
     # Calculate the position of the joystick and servo on the graph
     joystick_position = 31 - (x_val // 2048)
     # Draw the line for the joystick positions
-    graph_framebuf.line(126, joystick_position, 127, joystick_position, 1)
+    graph_framebuf.line(126, joystick_position, 127,
+                        joystick_position, 1)
 
     # Blit the graph to the OLED display
     oled.blit(graph_framebuf, 0, 0)
@@ -280,29 +279,37 @@ def main():
     i2c=I2C(0,sda=Pin(16), scl=Pin(17), freq=200000)
     screen = OLED(i2c)
     
+    # Create the servo objects
     joint_servo = Servo(2)
     hand_servo = Servo(3)
     
+    # Create the joystick object
     joystick = Joystick(26, 27, 28)
 
     # Define the PWM range for the SG-90 Servo Motor
     servo_min = 500
     servo_max = 7000
 
+    # Set the starting position of the joint servo motors
     joint_servo.set_position(1250)
     hand_servo.set_position(1250)
     
+    # Clear the OLED
     screen.oled.fill(0)
     count = 0
     
-    
     while True:
+        # Stores the positional data of the joystick and the button
         joystick_position = joystick.read_position()
         button_state = joystick.read_button_state()
         
-        servo = joystick_servo_mapping(joystick_position[0], servo_max, servo_min, joint_servo.pwm)
+        # Stores the servo position relative to the joystick position
+        servo = joystick_servo_mapping(joystick_position[0], servo_max,
+                                       servo_min, joint_servo.pwm)
         
-        plotting(joystick_position[0], servo, screen.graph_framebuf, screen.oled)
+        # Uses the joystick position to plot on OLED
+        plotting(joystick_position[0], servo, screen.graph_framebuf,
+                 screen.oled)
         
         # Maps the on/off state of the joystick button to turn a motor.
         # This motor will be the one that opens and closes the hand.
@@ -313,11 +320,11 @@ def main():
             hand_servo.pwm.duty_u16(3800)
             screen.text("Open", 95, 50)
         
+        # Checks the count to collect a max of 500 readings for the CSV
         if count > 0 and count < 501:
-            timestamp = utime.time()
-            
-            
-            data.write('{},{},{}\n'.format(timestamp, servo, joystick_position[0]))
+            timestamp = utime.time()           
+            data.write('{},{},{}\n'.format(timestamp, servo,
+                                           joystick_position[0]))
             utime.sleep_ms(100)
             
         elif count >= 501:

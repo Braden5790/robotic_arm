@@ -121,7 +121,7 @@ image = image.resize((new_width, new_height))
 photo = ImageTk.PhotoImage(image)
 
 intro_label = tk.Label(master=root, 
-                       text="Click a button to see positional data", 
+                       text="Click a button to see positional data",
                        font=('Arial', 16))
 intro_label.pack(side=tk.TOP, pady=20)
 
