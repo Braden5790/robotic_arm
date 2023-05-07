@@ -22,12 +22,18 @@ Access to a 3D printer is required to make this robotic arm. The CAD files will 
 * SSD1306 OLED LCD (x1)
 * Breadboard (x1)
 
-## Assembly
+### Assembly
 
-### Circuit
+Circuit:
+* Info about the circuit
 
-### Hardware
+Hardware:
+* Info about the 3D printed parts, screws, and motors
 
+### First Test
+To get started, the main.py file will need to be uploaded to the Raspberry Pi. This can be done using softwares such as Thonny. After uploading that file to the Raspberry Pi, the file can be run. Given everything in Assembly went well, the joystick should be controlling the movement of the servo motors, actuating the arm. After starting the script, a CSV file will be generated and will have positional data of the servo motors and joystick stored on it.
+
+To use the plotter.py functionality of this project, the CSV file will have to be collected from the Raspberry Pi and saved to the same folder as the plotter.py file. This will ensure the plotter.py program will have a CSV file to read from.
 
 ## Author
 
