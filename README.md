@@ -63,9 +63,11 @@ RPPW to PS2 Joystick:
 The hardware assembly is very straightforward. The motors are fitted to their corresponding holes in the 3D printed part, and are secured via the screws that came with the SG90 servo motors. The other hardware necessary is a M2x20 and a M2x8, and that is what is used to secure arm_3 to arm_4. It is important to note that the base must be securely attached to arm_1 for the robot to stay upright (i.e. using hot glue).
 
 ### First Test
-To get started, the main.py file will need to be uploaded to the Raspberry Pi. This can be done using softwares such as Thonny. After uploading that file to the Raspberry Pi, the file can be run. Given everything in Assembly went well, the joystick should be controlling the movement of the servo motors, actuating the arm. After starting the script, a CSV file will be generated and will have positional data of the servo motors and joystick stored on it.
+To get started, the main.py file will need to be uploaded to the Raspberry Pi. This can be done using softwares such as Thonny. After uploading that file to the Raspberry Pi, the file can be run. Given everything in **Assembly** went smoothly, the joystick should be controlling the movement of the servo motors, actuating the arm. After starting the script, a CSV file will be generated and will have positional data of the servo motors and joystick stored on it.
 
-To use the plotter.py functionality of this project, the CSV file will have to be collected from the Raspberry Pi and saved to the same folder as the plotter.py file. This will ensure the plotter.py program will have a CSV file to read from. If you do not have a Raspberry Pi, an example of the CSV that would be generated is in the Data folder.
+To use the plotter.py functionality of this project, the CSV file will have to be collected from the Raspberry Pi and saved to the same location as the plotter.py file. This will ensure the plotter.py program will have a CSV file to read from. If you do not have a Raspberry Pi, an example of the CSV that would be generated is in the **Data** folder.
+
+Once ran, the plotter.py program will display a pop-up window that will display an image of what an example circuit and arm would look like, and it will have three buttons. The buttons will allow the user to select different versions of displaying the positional data (Servo Motor Position, Joystick Position, or Servo Motor vs. Joystick Position).
 
 ## Author
 
