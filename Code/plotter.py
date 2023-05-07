@@ -1,4 +1,4 @@
-import csv
+import csv 
 import tkinter as tk
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
