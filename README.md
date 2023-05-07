@@ -25,10 +25,42 @@ Access to a 3D printer is required to make this robotic arm. The CAD files will 
 ### Assembly
 
 Circuit:
-* Info about the circuit
+
+![alt text](https://github.com/Braden5790/robotic_arm/blob/main/Images/picow-pinout.svg)
+
+The pinout diagram is a very important and useful resource to keep close while working any kind of microprocessor. In this case, this is the pinout diagram for the Raspberry Pi Pico W (RPPW). **Note:** There are two servo motors wired the exact same for both of the joint servos.
+
+RPPW to OLED LCD:
+
+* 18 (GND) to GND 
+* 40 (VBUS) to VCC
+* 22 (GP17) to SCL
+* 21 (GP16) to SDA
+
+RPPW to Joint Servo Motors:
+
+* 18 (GND) to GND
+* 4 (GP2) to Signal
+* 40 (VBUS) to VCC
+
+RPPW to Hand Servo Motor:
+
+* 18 (GND) to GND
+* 5 (GP3) to Signal
+* 40 (VBUS) to VCC
+
+RPPW to PS2 Joystick:
+
+* 18 (GND) to GND
+* 36 (3V3) to VCC
+* 31 (GP26) to VRx
+* 32 (GP27) to VRy
+* 34 (GP28) to SW
+
 
 Hardware:
-* Info about the 3D printed parts, screws, and motors
+
+The hardware assembly is very straightforward. The motors are fitted to their corresponding holes in the 3D printed part, and are secured via the screws that came with the SG90 servo motors. The other hardware necessary is a M2x20 and a M2x8, and that is what is used to secure arm_3 to arm_4. It is important to note that the base must be securely attached to arm_1 for the robot to stay upright (i.e. using hot glue).
 
 ### First Test
 To get started, the main.py file will need to be uploaded to the Raspberry Pi. This can be done using softwares such as Thonny. After uploading that file to the Raspberry Pi, the file can be run. Given everything in Assembly went well, the joystick should be controlling the movement of the servo motors, actuating the arm. After starting the script, a CSV file will be generated and will have positional data of the servo motors and joystick stored on it.
