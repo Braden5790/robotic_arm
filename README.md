@@ -12,6 +12,7 @@ Thonny Dependencies:
 
 Plotting Dependencies:
 * Matplotlib
+* Tkinter
 
 ### Hardware Requirements
 Access to a 3D printer is required to make this robotic arm. The CAD files will need to be put through a slicer (my favorite is Ultimaker Cura) to be able to be 3D printed. 
