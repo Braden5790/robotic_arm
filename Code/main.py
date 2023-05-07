@@ -38,12 +38,47 @@ import utime
 
 
 class OLED:
+    """
+    A class representing an OLED display that can be controlled
+    using the MicroPython language. This class uses the SSD1306_I2C
+    driver to communicate with the OLED display over I2C.
+
+    Attributes:
+
+    * width (int): The width of the OLED display, in pixels.
+    * height (int): The height of the OLED display, in pixels.
+    * oled (SSD1306_I2C): An instance of the SSD1306_I2C driver, used
+      to communicate with the OLED display over I2C.
+    * graph_buffer (bytearray): A buffer used for displaying graphics
+      on the OLED display. This buffer is half the height of the OLED
+      display, since the display is split into two sections.
+    * graph_framebuf (framebuf.FrameBuffer): An instance of the
+      MicroPython framebuf module used for displaying graphics on the
+      OLED display.
+    
+    Methods:
+
+    * line(x1, y1, x2, y2, color): Draws a line on the OLED display
+      between the points (x1, y1) and (x2, y2), with the given color.
+    * text(text, x, y): Displays the given text on the OLED display
+      at the specified position (x, y).
+    * fill_rect(x, y, width, height, color): Fills a rectangular area
+      on the OLED display with the given color.
+    * blit(framebuf, x, y): Copies the contents of the given frame
+      buffer to the OLED display at the specified position (x, y).
+    * show(): Updates the OLED display with any changes that have
+      been made.
+    * fill(color): Fills the entire OLED display with the given color.
+    """
     def __init__(self, i2c, width=128, height=64):
         self.width = width
         self.height = height
         self.oled = SSD1306_I2C(width, height, i2c)
         self.graph_buffer = bytearray(width * (height//2) // 8)
-        self.graph_framebuf = framebuf.FrameBuffer(memoryview(self.graph_buffer), width, (height//2), framebuf.MONO_HLSB)
+        self.graph_framebuf = framebuf.FrameBuffer(memoryview
+                                                   (self.graph_buffer),
+                                                   width, (height//2),
+                                                   framebuf.MONO_HLSB)
 
     def line(self, x1, y1, x2, y2, color):
         self.oled.line(x1, y1, x2, y2, color)
@@ -64,6 +99,28 @@ class OLED:
         self.oled.fill(color)
 
 class Servo:
+    """
+    A class representing a servo motor that can be controlled using
+    the MicroPython language. This class uses the machine.PWM module
+    to generate pulse-width modulation signals that are used to control
+    the position of the servo motor.
+
+    Attributes:
+
+    * pin (int): The pin number to which the servo motor is connected.
+    * pwm (machine.PWM): An instance of the machine.PWM module used to
+      generate PWM signals for controlling the servo motor.
+    
+    Methods:
+
+    * set_position(position): Sets the position of the servo motor to
+      the specified value. The position value should be an integer
+      between 0 and 65535, representing the duty cycle of the PWM
+      signal in microseconds. This method converts the position value
+      to a 16-bit unsigned integer and sets the duty cycle of the PWM
+      signal to that value, causing the servo motor to move to the
+      corresponding position.
+    """
     def __init__(self, pin):
         self.pin = pin
         self.pwm = machine.PWM(machine.Pin(pin))
@@ -73,6 +130,33 @@ class Servo:
         self.pwm.duty_u16(int(position))
 
 class Joystick:
+    """
+    A class representing a joystick that can be read using the
+    MicroPython language. This class uses the machine.ADC and
+    machine.Pin modules to read the analog position values of the
+    joystick and the digital state of the joystick button.
+
+    Attributes:
+
+    * x_pin (int): The pin number to which the X-axis of the joystick
+      is connected.
+    * y_pin (int): The pin number to which the Y-axis of the joystick
+      is connected.
+    * sw_pin (int): The pin number to which the button of the joystick
+      is connected.
+    
+    Methods:
+
+    * read_position(): Reads the current position of the joystick and
+      returns a list containing the X and Y position values as unsigned
+      16-bit integers. The X and Y position values range from 0 to
+      65535, with 0 representing the minimum position and 65535
+      representing the maximum position.
+    * read_button_state(): Reads the current state of the joystick
+      button and returns a boolean value representing the button state.
+      True indicates that the button is pressed, while False indicates
+      that the button is released.
+    """
     def __init__(self, x_pin, y_pin, sw_pin):
         self.x_pin = machine.ADC(x_pin)
         self.y_pin = machine.ADC(y_pin)
@@ -87,6 +171,41 @@ class Joystick:
         return self.sw_pin.value()
 
 def joystick_servo_mapping(x_val, servo_max, servo_min, pwm1):
+    """
+    A function that maps the position values of a joystick to the
+    position of a servo motor. This function takes the X-axis position
+    value of a joystick, the maximum and minimum positions of the servo
+    motor, and an instance of the machine.PWM module used to control
+    the servo motor as input parameters.
+
+    Parameters:
+
+    * x_val (int): The X-axis position value of the joystick as an
+      unsigned 16-bit integer. The X-axis position value ranges from 0
+      to 65535, with 0 representing the minimum position and 65535
+      representing the maximum position.
+    * servo_max (int): The maximum position of the servo motor in
+      microseconds. This value should be an integer between 0 and 65535.
+    * servo_min (int): The minimum position of the servo motor in
+      microseconds. This value should be an integer between 0 and 65535.
+    * pwm1 (machine.PWM): An instance of the machine.PWM module used
+      to control the servo motor.
+    
+    Returns:
+
+    * servo_position (int): The position of the servo motor in microseconds
+      as an integer. If the joystick isn't moving, the function returns a
+      fixed value to prevent the motor from shaking. Otherwise, the function
+      returns the mapped servo position value as an integer.
+    
+    The function first maps the joystick position value to the range of the
+    servo motor position using linear interpolation. Then, if the joystick
+    isn't moving, it sends back a fixed position value to prevent the servo
+    motor from shaking. Otherwise, it sets the duty cycle of the PWM signal
+    to the mapped servo position value, causing the servo motor to move to
+    the corresponding position. Finally, the function returns the servo
+    position value as an integer.
+    """  
     # Map joystick positional data to servo motor position
     servo_position = round(((x_val - 0) / (65536 - 0) * (servo_max - servo_min) + servo_min))
 
@@ -100,6 +219,21 @@ def joystick_servo_mapping(x_val, servo_max, servo_min, pwm1):
     return servo_position    
 
 def plotting(x_val, servo_position, graph_framebuf, oled):
+    """
+    Plots joystick and servo positional data on an OLED screen.
+
+    Parameters:
+    
+    * x_val (int): Positional data of the joystick.
+    * servo_position (int): Positional data of the servo motor.
+    * graph_framebuf (framebuf): A frame buffer used to draw the graph on the OLED.
+    * oled (OLED): An OLED display to plot the data on.
+
+    Returns:
+    
+    * None
+    """
+    
     oled.line(0, 38, 125, 38, 1)
     oled.line(85, 38, 85, 63, 1)
     oled.text("Hand:", 90, 40)
@@ -131,6 +265,14 @@ def plotting(x_val, servo_position, graph_framebuf, oled):
     oled.fill(0)
 
 def main():
+    """
+    Controls the robotic arm by reading the position of the joystick,
+    mapping it to the joint servo motor, and displaying the positions
+    of the joystick and servo motor on an OLED screen. Opens and closes
+    the hand servo motor based on the state of the joystick button.
+    Records the position of the servo motor and joystick to a CSV file
+    for later analysis. Exits when the CSV file has recorded 500 data points.
+    """
     data = open('data.csv', 'w')
     data.write('timestamp,servo_pos,joystick_pos\n')
     
@@ -180,7 +322,7 @@ def main():
             
         elif count >= 501:
             data.close()
-            print('done')
+            print('Data Collected')
                 
         count += 1
 
