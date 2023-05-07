@@ -26,7 +26,7 @@ and the servo motors and will export that data in a csv file.
 This can then be used by the second Python file to visualize the data
 using matplotlib and tkinter.
 
-Next Steps:
+Next Steps: 
 * Potentially add another servo to act as the rotational axis (this
 requires a dive into the documentation about the maximum capacity),
 this could be mapped to the y-axis of the joystick.
