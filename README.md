@@ -69,7 +69,7 @@ To get started, the main.py file will need to be uploaded to the Raspberry Pi. T
 
 To use the plotter.py functionality of this project, the CSV file will have to be collected from the Raspberry Pi and saved to the same location as the plotter.py file. This will ensure the plotter.py program will have a CSV file to read from. If you do not have a Raspberry Pi, an example of the CSV that would be generated is in the **Data** folder.
 
-Once ran, the plotter.py program will display a pop-up window that will display an image of what an example circuit and arm would look like, and it will have three buttons. The buttons will allow the user to select different versions of displaying the positional data (Servo Motor Position, Joystick Position, or Servo Motor vs. Joystick Position).
+Once ran, the plotter.py program will display a pop-up window that will display an image of what an example circuit and arm would look like, and it will have three buttons. The buttons will allow the user to select different versions of displaying the positional data, seen below (Servo Motor Position, Joystick Position, or Servo Motor vs. Joystick Position). All data was plotted using Matplotlib.
 
 ![alt text](https://github.com/Braden5790/robotic_arm/blob/main/Images/buttons.png)
 
