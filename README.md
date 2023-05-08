@@ -76,7 +76,7 @@ Once ran, the plotter.py program will display a pop-up window that will display 
 
 ## Demo Video
 
-
+![alt text](https://github.com/Braden5790/robotic_arm/blob/main/Demo_Gif.gif)
 
 ## Author
 
