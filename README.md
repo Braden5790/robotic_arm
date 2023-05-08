@@ -64,7 +64,7 @@ RPPW to PS2 Joystick:
 The hardware assembly is very straightforward. The motors are fitted to their corresponding holes in the 3D printed part, and are secured via the screws that came with the SG90 servo motors. The other hardware necessary is a M2x20 and a M2x8, and that is what is used to secure arm_3 to arm_4. It is important to note that the base must be securely attached to arm_1 for the robot to stay upright (i.e. using hot glue).
 
 ### First Test
-To get started, the main.py file will need to be uploaded to the Raspberry Pi. This can be done using softwares such as Thonny. After uploading that file to the Raspberry Pi, the file can be run. Given everything in **Assembly** went smoothly, the joystick should be controlling the movement of the servo motors, actuating the arm. After starting the script, a CSV file will be generated and will have positional data of the servo motors and joystick stored on it. The robotic arm should look something like this:
+To get started, the main.py file will need to be uploaded to the Raspberry Pi. This can be done using softwares such as Thonny. After uploading that file to the Raspberry Pi, the file can be run. Given everything in **Assembly** went smoothly, the joystick should be controlling the movement of the servo motors, actuating the arm. Pressing in on the joystick should also close and then upon release of the joystick button, open the hand of the arm. After starting the script, a CSV file will be generated and will have the recorded positional data of the servo motors and joystick stored on it. The robotic arm should look something like this:
 
 ![alt text](https://github.com/Braden5790/robotic_arm/blob/main/Images/robot_arm.png)
 
