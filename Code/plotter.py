@@ -104,7 +104,7 @@ canvas.draw()
 canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
 # Load the image file using Pillow
-image = Image.open('robot_arm_final.jpg')
+image = Image.open('robotic_arm_final.jpg')
 
 # Resize the image to fit within the screen
 width, height = root.winfo_screenwidth(), root.winfo_screenheight()
