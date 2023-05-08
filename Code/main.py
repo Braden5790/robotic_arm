@@ -315,10 +315,10 @@ def main():
         # This motor will be the one that opens and closes the hand.
         if button_state == 1:
             hand_servo.pwm.duty_u16(1250)
-            screen.text("Shut", 95, 50)
-        elif button_state == 0:
-            hand_servo.pwm.duty_u16(3800)
             screen.text("Open", 95, 50)
+        elif button_state == 0:
+            hand_servo.pwm.duty_u16(4500)
+            screen.text("Shut", 95, 50)
         
         # Checks the count to collect a max of 500 readings for the CSV
         if count > 0 and count < 501:
